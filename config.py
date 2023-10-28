@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join, splitext
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
         QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog)
+from PyQt5 import QtGui, QtCore
 
 class Config:
     
@@ -21,6 +22,13 @@ class Config:
         self.imageR = None
         self.imageL = None
         self.cali = ()
+
+        self.image1 = None
+        self.image2 = None
+
+        # img for Q5
+        self.augImgs = []
+        self.qt_img_lable = None
     
     def load_files(self):
         folderPath = QFileDialog.getExistingDirectory()
@@ -45,6 +53,36 @@ class Config:
         if filename:
             self.imageR = filename
     
+    def load_image1(self):
+        filename, filetype = QFileDialog.getOpenFileName()
+        if filename:
+            self.image1 = filename
+
+    def load_image2(self):
+        filename, filetype = QFileDialog.getOpenFileName()
+        if filename:
+            self.image2 = filename
+
+    def load_augImgs(self):
+        folderPath = QFileDialog.getExistingDirectory()
+        files = [f for f in listdir(folderPath) if isfile(join(folderPath, f))]
+        # files.sort(key=lambda x: int(splitext(x)[0]))
+        files = [join(folderPath, f) for f in files]
+
+        # reload files
+        self.augImgs = files
+        print(str(self.augImgs))
+
+        return files
+
+    # def load_augImg(self):
+    #     filename, filetype = QFileDialog.getOpenFileName()
+    #     if filename:
+    #         self.augImg = filename
+    #     pixmap = QtGui.QPixmap(self.augImg)
+    #     pixmap = pixmap.scaled(200, 200)
+    #     self.qt_img_lable.setPixmap(pixmap)
+
     def check_files(self):
         if self.files == None or len(self.files) == 0:
             print("No files selected")

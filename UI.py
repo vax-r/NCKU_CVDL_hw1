@@ -1,9 +1,4 @@
 import sys
-from os import listdir
-from os.path import isfile, join, splitext
-
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
         QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox)
 
@@ -11,10 +6,14 @@ from config import global_config
 from calibration import Calibration
 from augmentor import Augmentor
 from stereomap import StereoMap
+from sift import SIFT
+from vgg19 import VGG19
 
 local_cali = Calibration()
 local_aug = Augmentor()
 local_stereo = StereoMap()
+local_sift = SIFT()
+local_vgg = VGG19()
 
 class UI(QWidget):
     
@@ -25,9 +24,9 @@ class UI(QWidget):
         grid.addWidget(self.createSetting(), 0, 0)
         grid.addWidget(self.createQ1(), 0, 1)
         grid.addWidget(self.createQ2(), 0, 2)
-        grid.addWidget(self.createQ3(), 1, 0)
-        grid.addWidget(self.createQ4(), 1, 1)
-        grid.addWidget(self.createQ5(), 1, 2)
+        grid.addWidget(self.createQ3(), 0, 3)
+        grid.addWidget(self.createQ4(), 1, 0)
+        grid.addWidget(self.createQ5(), 1, 1)
 
         self.setLayout(grid)
 
@@ -127,6 +126,11 @@ class UI(QWidget):
         keypoints_button = QPushButton("4.1 Keypoints")
         matched_button = QPushButton("4.2 Matched Keypoints")
 
+        image1_button.clicked.connect(global_config.load_image1)
+        image2_button.clicked.connect(global_config.load_image2)
+        keypoints_button.clicked.connect(local_sift.keypoints)
+        matched_button.clicked.connect(local_sift.matchedKeypoints)
+
         vbox = QVBoxLayout()
         vbox.addWidget(image1_button)
         vbox.addWidget(image2_button)
@@ -144,6 +148,9 @@ class UI(QWidget):
         model_button = QPushButton("5.2 Show Model Structure")
         accloss_button = QPushButton("5.3 Show acc and loss")
         interference_button = QPushButton("5.4 Interference")
+
+        # image_button.clicked.connect(global_config.load_augImg)
+        augmented_button.clicked.connect(local_vgg.showAugmentationImg)
 
         vbox = QVBoxLayout()
         vbox.addWidget(image_button)

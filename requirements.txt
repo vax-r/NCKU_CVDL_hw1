@@ -3,3 +3,8 @@ pandas
 opencv-contrib-python==3.4.13.47
 matplotlib==3.7.3
 PyQt5==5.15.10
+torch==2.1.0
+torchvision==0.16.0
+torchsummary==1.5.1
+tensorboard==2.14.0
+Pillow==10.1.0
