@@ -9,8 +9,12 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
 
 from config import global_config
 from calibration import Calibration
+from augmentor import Augmentor
+from stereomap import StereoMap
 
 local_cali = Calibration()
+local_aug = Augmentor()
+local_stereo = StereoMap()
 
 class UI(QWidget):
     
@@ -91,6 +95,9 @@ class UI(QWidget):
         board_button = QPushButton("2.1 Show Words on Board")
         vertical_button = QPushButton("2.2 Show Words Vertically")
 
+        board_button.clicked.connect(local_aug.WordProject2D)
+        vertical_button.clicked.connect(local_aug.WordProject3D)
+
         vbox = QVBoxLayout()
         vbox.addWidget(board_button)
         vbox.addWidget(vertical_button)
@@ -103,6 +110,7 @@ class UI(QWidget):
         groupBox = QGroupBox("3. Stereo Disparity Map")
 
         map_button = QPushButton("3.1 Stereo Disparity Map")
+        map_button.clicked.connect(local_stereo.stereoDisparityMap)
 
         vbox = QVBoxLayout()
         vbox.addWidget(map_button)

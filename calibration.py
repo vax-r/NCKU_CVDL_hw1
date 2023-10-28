@@ -12,7 +12,6 @@ def resize(img):
     width = CV2PreviewSize
     return cv2.resize(img, (width, height))
 
-
 class Calibration():
     W = 11
     H = 8
@@ -48,11 +47,10 @@ class Calibration():
 
     def cali_camera(self):
         imgPoints = []
-        objPoints = []
-        if global_config.files == None or len(global_config.files) == 0:
-            print("No files loaded")
+        objPoints = [] 
+        if global_config.check_files() == False:
             return
-        
+                
         for file in global_config.files:
             imgP = []
             objP = []
