@@ -20,6 +20,7 @@ class Config:
         self.WordInput = "CAMERA"
         self.imageR = None
         self.imageL = None
+        self.cali = ()
     
     def load_files(self):
         folderPath = QFileDialog.getExistingDirectory()
@@ -27,9 +28,9 @@ class Config:
         files.sort(key=lambda x: int(splitext(x)[0]))
         files = [join(folderPath, f) for f in files]
 
-        # reload files
+        # reload files and clibration result
         self.files = files
-        
+        self.cali = ()
         # print(str(self.files))
 
         return files
@@ -43,6 +44,12 @@ class Config:
         filename, filetype = QFileDialog.getOpenFileName()
         if filename:
             self.imageR = filename
+    
+    def check_files(self):
+        if self.files == None or len(self.files) == 0:
+            print("No files selected")
+            return False
+        return True
 
 # Init global config
 global_config = Config()

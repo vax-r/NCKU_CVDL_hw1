@@ -5,7 +5,7 @@ from os.path import isfile, join, splitext
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog)
+        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox)
 
 from config import global_config
 from calibration import Calibration
@@ -55,9 +55,12 @@ class UI(QWidget):
         corners_button = QPushButton("1.1 Find corners")
         intrinsic_button = QPushButton("1.2 FInd intrinsic")
 
+        extrinsic_combo = QComboBox()
+        extrinsic_combo.addItems(['%d' % (i+1,) for i in range(0, 15)])
         extrinsic_box = QGroupBox("1.3 Find extrinsic")
         extrinsic_button = QPushButton("1.3 Find extrinsic")
         subBox = QVBoxLayout()
+        subBox.addWidget(extrinsic_combo)
         subBox.addWidget(extrinsic_button)
         subBox.addStretch(1)
         extrinsic_box.setLayout(subBox)
@@ -66,6 +69,10 @@ class UI(QWidget):
         result_button = QPushButton("1.5 Show result")
 
         corners_button.clicked.connect(local_cali.corner_detect)
+        intrinsic_button.clicked.connect(local_cali.IntrinMtr)
+        extrinsic_button.clicked.connect(lambda: local_cali.ExtrinMtr(extrinsic_combo.currentText()))
+        distortion_button.clicked.connect(local_cali.Distortion)
+        result_button.clicked.connect(local_cali.Undistort)
 
         vbox = QVBoxLayout()
         vbox.addWidget(corners_button)
