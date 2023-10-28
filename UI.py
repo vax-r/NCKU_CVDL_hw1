@@ -1,10 +1,19 @@
 import sys
+from os import listdir
+from os.path import isfile, join, splitext
+
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget)
+        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog)
+
+from config import global_config
+from calibration import Calibration
+
+local_cali = Calibration()
 
 class UI(QWidget):
+    
     def __init__(self, parent=None):
         super(UI, self).__init__(parent)
 
@@ -26,6 +35,10 @@ class UI(QWidget):
         load_folder_button = QPushButton("Load Folder")
         load_rimage_button = QPushButton("Load Image R")
         load_limage_button = QPushButton("Load Image L")
+
+        load_folder_button.clicked.connect(global_config.load_files)
+        load_rimage_button.clicked.connect(global_config.load_imageR)
+        load_limage_button.clicked.connect(global_config.load_imageL)
 
         vbox = QVBoxLayout()
         vbox.addWidget(load_folder_button)
@@ -51,6 +64,8 @@ class UI(QWidget):
 
         distortion_button = QPushButton("1.4 Find distortion")
         result_button = QPushButton("1.5 Show result")
+
+        corners_button.clicked.connect(local_cali.corner_detect)
 
         vbox = QVBoxLayout()
         vbox.addWidget(corners_button)
