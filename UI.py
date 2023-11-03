@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox)
+        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox, QLabel)
 
 from config import global_config
 from calibration import Calibration
@@ -27,6 +27,7 @@ class UI(QWidget):
         grid.addWidget(self.createQ3(), 0, 3)
         grid.addWidget(self.createQ4(), 1, 0)
         grid.addWidget(self.createQ5(), 1, 1)
+        grid.addWidget(self.createInf(), 1, 2)
 
         self.setLayout(grid)
 
@@ -149,8 +150,11 @@ class UI(QWidget):
         accloss_button = QPushButton("5.3 Show acc and loss")
         interference_button = QPushButton("5.4 Interference")
 
-        # image_button.clicked.connect(global_config.load_augImg)
+        image_button.clicked.connect(local_vgg.load_infImage)
         augmented_button.clicked.connect(local_vgg.showAugmentationImg)
+        model_button.clicked.connect(local_vgg.Print_model_struct)
+        accloss_button.clicked.connect(local_vgg.show_acc_loss)
+        interference_button.clicked.connect(local_vgg.inference)
 
         vbox = QVBoxLayout()
         vbox.addWidget(image_button)
@@ -158,6 +162,21 @@ class UI(QWidget):
         vbox.addWidget(model_button)
         vbox.addWidget(accloss_button)
         vbox.addWidget(interference_button)
+
+        groupBox.setLayout(vbox)
+        return groupBox
+    
+    def createInf(self):
+        groupBox = QGroupBox("Inference output")
+
+        self.imgLabel = QLabel("", self)
+        global_config.qt_img_lable = self.imgLabel
+        self.predLabel = QLabel("", self)
+        global_config.img_pred_label = self.predLabel
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.imgLabel)
+        vbox.addWidget(self.predLabel)
 
         groupBox.setLayout(vbox)
         return groupBox

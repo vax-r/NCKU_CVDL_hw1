@@ -28,7 +28,9 @@ class Config:
 
         # img for Q5
         self.augImgs = []
+        self.infImg = None
         self.qt_img_lable = None
+        self.img_pred_label = None
     
     def load_files(self):
         folderPath = QFileDialog.getExistingDirectory()
