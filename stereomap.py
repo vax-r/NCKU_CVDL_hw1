@@ -44,8 +44,12 @@ class StereoMap():
         cv2.destroyAllWindows()
 
     def clickOnCVCanvas(self, event, x, y, flags, param):
-        if event == cv2.EVENT_LBUTTONDOWN:
+        if event == cv2.EVENT_LBUTTONDOWN and self.disparity[y][x] != 0:
+            print(f'({x}, {y}), dis:{self.disparity[y][x]}')
             x2 = int(x - self.disparity[y][x] / 16 / self.scaleFactor)
             imgTmp = np.copy(self.imgR)
             cv2.circle(imgTmp, (x2, y), 3, (0, 255, 0), -1)
             cv2.imshow("imgR", imgTmp)
+        elif self.disparity[y][x] == 0:
+            print("Failure")
+            return

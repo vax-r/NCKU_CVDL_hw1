@@ -8,9 +8,17 @@ from calibration import Calibration, resize
 class Augmentor():
     def __init__(self):
         self.cali = Calibration()
+        self.text = ""
     
+    def GetTextInput(self, input):
+        self.text = input.upper()
+
     def WordProjection(self, lib):
         if global_config.check_files() == False:
+            return
+        
+        if self.text == "" or len(self.text) == 0:
+            print("Please type input text")
             return
 
         retval, cameraMatrix, distCoeffs, rvecs, tvecs = self.cali.cali_camera()
@@ -22,7 +30,7 @@ class Augmentor():
         objectPoints = []
         shiftX = 7
         shiftY = 5
-        for (j, token) in enumerate(global_config.WordInput):
+        for (j, token) in enumerate(self.text):
             k = 0
             data = fs.getNode(token).mat().reshape(-1)
             while k < len(data):

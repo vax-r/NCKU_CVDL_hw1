@@ -34,6 +34,9 @@ class Config:
     
     def load_files(self):
         folderPath = QFileDialog.getExistingDirectory()
+        if folderPath is None or len(folderPath) == 0:
+            print("You didn't select a folder")
+            return
         files = [f for f in listdir(folderPath) if isfile(join(folderPath, f))]
         files.sort(key=lambda x: int(splitext(x)[0]))
         files = [join(folderPath, f) for f in files]

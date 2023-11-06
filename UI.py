@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QGridLayout, QGroupBox,
-        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox, QLabel)
+        QMenu, QPushButton, QRadioButton, QVBoxLayout, QWidget, QFileDialog, QComboBox, QLabel, QLineEdit)
 
 from config import global_config
 from calibration import Calibration
@@ -92,13 +92,17 @@ class UI(QWidget):
     def createQ2(self):
         groupBox = QGroupBox("2. Augmented Reality")
 
+        text_input = QLineEdit()
+        text_input.setGeometry(0, 0, 100, 30)
         board_button = QPushButton("2.1 Show Words on Board")
         vertical_button = QPushButton("2.2 Show Words Vertically")
 
+        text_input.textChanged.connect(local_aug.GetTextInput)
         board_button.clicked.connect(local_aug.WordProject2D)
         vertical_button.clicked.connect(local_aug.WordProject3D)
 
         vbox = QVBoxLayout()
+        vbox.addWidget(text_input)
         vbox.addWidget(board_button)
         vbox.addWidget(vertical_button)
 
